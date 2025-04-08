@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { Layout } from 'antd';
+import Collections from './Components/Collections';
+import Player from './Components/Player';
+import './App.css';
+
+const { Header, Sider, Content, Footer } = Layout;
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedCollection, setSelectedCollection] = useState(null);
+  const [playing, setPlaying] = useState(false);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider width={250} theme="light">
+        <Collections 
+          onSelect={setSelectedCollection}
+          selectedKey={selectedCollection}
+        />
+      </Sider>
+
+      <Layout>
+        <Content style={{ padding: '24px' }}>
+          {/* 这里后续显示选中合集的音乐列表 */}
+          <div style={{ background: '#fff', padding: 24, minHeight: 360 }}>
+            当前选中合集：{selectedCollection || '请选择合集'}
+          </div>
+        </Content>
+
+        <Footer style={{ 
+          position: 'sticky',
+          bottom: 0,
+          backgroundColor: '#f0f2f5',
+          padding: '16px',
+          borderTop: '1px solid #e8e8e8'
+        }}>
+          <Player 
+            isPlaying={playing}
+            onPlayPause={setPlaying}
+          />
+        </Footer>
+      </Layout>
+    </Layout>
+  );
 }
 
 export default App
